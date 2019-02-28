@@ -1,0 +1,6 @@
+RANSEED TYPE       ! Random # seed and type; TYPE = 0 for pseudo, = 1 for SOBOL
+1 ch3oh.xyz     ! M GEOFILE
+1 ar.xyz        ! M GEOFILE
+SAMPLES         ! Number of samples per core
+2 2.5 1. 7.5          ! Minimum and maximum allowable values of the A-B center of mass distance
+0.              ! Zero of energy (the energy of A+B) in Hartrees
