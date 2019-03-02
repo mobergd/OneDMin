@@ -1,29 +1,38 @@
+
 #set POT here or use 'gmake POT=potname'
 POT=molpro
 #POT=tbplusexp6all
 #POT=rohM
 METH=auto1dmin
 
-TARG = ./auto1dmin.x
+EXEDIR = ./
+TARG = $(EXEDIR)/auto1dmin.x
+OBJDIR = obj
 
 FC = gfortran
+CC = gfortran
+LD = gfortran
 OPT_FFLAGS = -O3
+FTPPFLAGS = -I.. -c
 FFLAGS = -c
-LIBS = -llapack -lblas
+CFLAGS = -c
+COMPLIB = -llapack -lblas
+LIBS = $(COMPLIB) $(RNGLIB)
 LDFLAGS = -O3 -g -L/usr/lib64 -L/home/ajasper/lib
 
-VPATH = ..
-
-SRC = $(POT).f  \
-	  spin.f    \
-	  mass.f    \
+SRC = $(POT).f \
+	  spin.f \
+	  mass.f \
 	  $(METH).f 
 
 OBJ = $(patsubst %.f,%.o,$(SRC))
 
+EXEDIR:=../$(EXEDIR)
 MAKEOPT = -f ../Makefile
 all: yes_opt
 
+no_opt:
+	$(MAKE) $(MAKEOPT) -C obj targ
 yes_opt:
 	$(MAKE) $(MAKEOPT) -C obj EXESUFFIX=.opt OPT="$(OPT_FFLAGS)" targ
 
@@ -32,11 +41,11 @@ targ: $(TARG)
 COMPILE = $(FC) $(FFLAGS) $(OPT)
 
 $(TARG): $(OBJ)
-	$(FC) $(LDFLAGS) $(OBJ) $(LIBS) -o $(TARG)
+	$(LD) $(LDFLAGS) $(OBJ) $(LIBS) -o $(TARG)
 
 %.o : %.f
 	$(COMPILE) $< -o $@
 
 clean:
-	-rm -f obj*/* ./auto1dmin.x 
+	-rm -f obj*/* ./auto1dmin.x
 

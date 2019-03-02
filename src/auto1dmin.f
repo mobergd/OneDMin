@@ -73,7 +73,6 @@ c     Standard input must contain these 3 lines
       zeroflag=0
 
 c hard code the rest of the input for automated kinetics
-c      ranseed = 234567   ! random no. seed; bad practice to hard code this one
       nsamp = 10  ! number of orientations to average over
       smin = 3.0  ! min and max allowable center of mass distances; these might break automated scripts
       smax = 5.d0
