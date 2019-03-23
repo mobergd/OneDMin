@@ -1,5 +1,5 @@
- ${ranseed} ${nsamples}
- smallest.geo 
- ${bath} 
- ${smin} ${smax}
+${ranseed} ${nsamples}
+molecule.xyz
+${bath} 
+${smin} ${smax}
 
