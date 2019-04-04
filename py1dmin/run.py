@@ -6,201 +6,53 @@ import tempfile
 import autodir
 
 
-def get_geometry(geom_str, fileflag=False, roundflag=False):
-    """ Gets the geometry information.
-    """
+# Set variables needed for run
+name = 'H2O'
+geoid = 'O'
+mult = 1
+nsamp = 40
+bath = 'N2'
+pot = 'lj126'
+iread = False
+isphere = False
 
-    if file_exists is False:
+# NJOBs = sys.argv[1]
+# while jobs_submit < NJOBS: (do something below)
 
-        if geom_str is smiles:
-            # Convert to Inchi string; get geometry
-            ich = automol.smiles.inchi(geom_str)
-            geom = automol.inchi.geometry(ich)
-        if geom_str is inchi:
-            # Use Inchi string to get geometry
-            geom = automol.inchi.geometry(geom_str)
+# Check if the species is in the database
+DBANK_DIR = '/path/to/dbnk'
+dbank_dir_path = autodir.lj.directory_path(DBANK_DIR, bath, pot)
+if os.path.exists(dbank_dir_path):
+    eps = autodir.lj.read_epsilon_file(DBANK_DIR, bath, pot)
+    sig = autodir.lj.read_sigma_file(DBANK_DIR, bath, pot)
+    # continue loop
+    # might just give message saying they are found for run
 
-    else:
-        geom = read_geom_path
+# Set temp directory name
+TMP_DIR = tempfile.mkdtemp()
 
-    if roundflag is True:
-        geom = rot_geom(geom)
+# Set the temp directory path
+dir_path = autodir.lj.directory_path(TMP_DIR, bath, pot)
 
-    return geom
+# Create the temp directory
+autodir.lj.create(TMP_DIR, bath, pot)
 
+# Get the xyz coordinates for the target geometry
+geom_target = get_geometry(geoid, iread, isphere)
+geom_bath = get_bath(bath)
 
-def roundify_geometry(geom):
-    """ Takes a geometry and makes it more spherical
-    """
+# Run the LJ-126 with direct dynamics
+run_pot(geom_target, geom_bath, mult, nsamp, pot='lj126')
+# assert pot == 'lj126'
 
-    # Get the number of atoms
-    natom = len(geom)
+ # Open the input file and read in the all of the strings
+ with open('input.dat', 'r') as input_file:
+     INPUT_LINES = input_file.readlines()
 
-    # round the geometry
-    rrminmax = 1.0e10
-    a = 0
-    win = 0
-    while a*(natom+2) < natom:
-        rrmax = 0.0
-        for i in range(natom):
-            for j in range(i+1, natom):
-                atom1 = geom[i+a*(natom+2)+2]
-                atom2 = geom[j+a*(natom+2)+2]
-                rr = np.sqrt((atom1[0]-atom2[0])**2 +
-                             (atom1[1]-atom2[1])**2 +
-                             (atom1[2]-atom2[2])**2)
-                if rr > rrmax:
-                    rrmax = rr
-        if rrmax > rrminmax:
-            rrminmax = rrmax
-            win = a
-        a += 1
+ # Open the qc file to get the quantum chem information
+ with open('qc.dat', 'r') as qc_file:
+     QC_LINES = qc_file.readlines()
 
-#    for i in range(len()):
-#        print(a)
+ # Loop through lines
+ for line in INPUT_LINES:
 
-    return geom_round
-
-
-def check_database(path):
-    """ Searches the database to see if the sigma and epsilon
-        are available
-    """
-
-    if os.path.exists():
-        indatabase = True
-    else:
-        indatabase = False
-
-    return indatabase
-
-
-def parse_info(input_line):
-    """ parses line of geometry for info and errors
-    """
-    tmp = input_line.strip().split()
-
-    assert tmp == 5
-    name = tmp[0]
-    geoid = tmp[1]
-    mult = tmp[2]
-    read_flag = tmp[3]
-    round_flag = tmp[4]
-
-    return name, geoid, mult, read_flag, round_flag
-
-
-def launch_job(ncpus):
-    """ launches the job
-    """
-
-    # Set the dictionary for the 1DMin input file
-    fill_vals = {
-        "ncpus": ncpus
-    }
-
-    # Fill the template
-    tempname = 'submit.mako'
-    submit_str = Template(filename=template_file_path).render(**fill_vals)
-
-    # Write the file
-    with open('batch_submit.sh', 'w') as input_file:
-        input_file.write(submit_str)
-
-    # Submit the job to Slurm
-    subprocess.check_call(['sbatch', 'batch_submit.sh'])
-
-    return None
-
-
-def write_1dmin_inp(seed, nsamp, bath, smin, smax):
-    """ writes the 1dmin input file for each instance
-    """
-
-    # Set the dictionary for the 1DMin input file
-    fill_vals = {
-        "ranseed": seed,
-        "nsamples": nsamp,
-        "bath": bath,
-        "smin": smin,
-        "smax": smax
-    }
-
-    # Fill the template
-    tempname = '1dmin_inp.mako'
-    input_str = Template(filename=template_file_path).render(**fill_vals)
-
-    # Write the file
-    with open('1dmin.inp', 'w') as input_file:
-        input_file.write(input_str)
-
-    return None
-
-
-def parse_input_file(filename):
-    """ Opens the Auto1DMIN options file and reads in the keywords.
-    """
-
-    # Read the file into a string
-    with open(option_filename, 'r') as optfile:
-        opt_str = optfile.read()
-
-    # Get the block of qc options
-    qc_option_begin = '$QC'
-    qc_option_end = '$END'
-    qc_option_block(qc_option_begin,
-                    qc_option_end,
-                    opt_str)
-
-    # Get the block of qc options
-    prog_option_begin = '$1DMIN'
-    prog_option_end = '$END'
-    prog_option_block(prog_option_begin,
-                      prog_option_end,
-                      opt_str)
-
-    # Search the blocks for keywords
-
-    return stuff
-
-
-if __name__ == 'main':
-
-    # Set variables needed for run
-    name = 'H2O'
-    geoid = 'O'
-    mult = 1
-    iread = False
-    isphere = False
-
-    # Create the tempdirectory
-    TMP_DIR = tempfile.mkdtemp()
-
-
-#    # Open the input file and read in the all of the strings
-#    with open('input.dat', 'r') as input_file:
-#        INPUT_LINES = input_file.readlines()
-#
-#    # Open the qc file to get the quantum chem information
-#    with open('qc.dat', 'r') as qc_file:
-#        QC_LINES = qc_file.readlines()
-#
-#    # Loop through lines
-#    for line in INPUT_LINES:
-#
-#        # Parse line to get the vars needed to create and run job
-#        name, geoid, mult, read_flag, round_flag = parse_info(line)
-#
-#        # Convert geoid? if not inchi for use in automol
-#
-#        # Check database
-#        indatabase = check_database(geoid, mult, method, basis, pot)
-#        if indatabase is True:
-#            continue
-#        else:
-#            # Get the geometry
-#            geom = get_geometry(geoid, read_flag, round_flag)
-#            # Build and change to tmp directory
-#            tmpdir = auto_.build
-#            # Change to tmpdir
-#            os.chdir(tmpdir)
