@@ -1,0 +1,29 @@
+Doing: NNO, canonical SMILES = [O-][N+]#N, multiplicity = 1
+OO          1.02374        0.08016       -0.05107
+NN          2.35966        0.08016       -0.05107
+NN          3.47166        0.08016       -0.05107
+C0
+O1
+N2
+Cl0
+H0
+Database path: ON/O1N2/O1N2/[O-][N+]hN
+cp: cannot stat ‘/lcrc/project/KTP/kmoore/nno/1_N2/database/xyz/[O-][N+]hN.xyz’: No such file or directory
+Confomers: 1
+running /lcrc/project/KTP/kmoore/auto1dmin/scripts/minmax.pl < ../obabel-confs.xyz 
+
+OUTPUT:
+Name: NNO
+Multiplicity: 1
+Smiles: [O-][N+]#N
+Path: ON/O1N2/O1N2/[O-][N+]hN
+Output for 1dmin/lj.dat
+ PATH: /lcrc/project/KTP/kmoore/nno/1_N2/database/ON/O1N2/O1N2/[O-][N+]hN/1dmin/lj.dat 
+ CollisionFrequency
+   LennardJones
+     Epsilons[1/cm]        247.880866746988   247.880866746988 
+     Sigmas[angstrom]         3.55018590361446  3.55018590361446  
+     Masses[amu]             0. 0. 
+   End
+
+NNO 3.55018590361446 247.880866746988 ! [O-][N+]#N 1 

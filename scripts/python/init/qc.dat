@@ -1,0 +1,15 @@
+$1DMIN
+bath = n2
+cpus = 20
+samples = 40
+pot = dd-lj
+$END
+
+$QC
+prog = molpro2015
+method = df-rmp2
+basis = avdz
+memory = 4
+$END
+
+

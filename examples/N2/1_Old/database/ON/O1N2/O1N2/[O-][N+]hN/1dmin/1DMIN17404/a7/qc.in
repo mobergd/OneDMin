@@ -1,0 +1,25 @@
+***                                                                             
+memory,500,m                                                                    
+                                                                                
+nosym                                                                           
+noorient                                                                        
+geometry                                                                        
+           5
+ ANT Direct Dynamics Calculation
+ O           0.0906652011        0.7807804537        0.9122618360
+ N          -0.0099186134       -0.0854160072       -0.0997998389
+ N          -0.0936430892       -0.8064250979       -0.9422249710
+ N2          2.9899910291       -0.3724234470        0.3462785318
+ N2          3.4028675304        0.3724234470       -0.3462785318
+end                                                                             
+                                                                                
+basis,default=avdz,h=vdz                                                        
+{df-rhf}                                                                        
+{df-rmp2}                                                                       
+                                                                                
+set,spin=0                                                                      
+                                                                                
+molpro_energy=energy                                                            
+show[1,e25.15],molpro_energy                                                    
+                                                                                
+---                                                                             

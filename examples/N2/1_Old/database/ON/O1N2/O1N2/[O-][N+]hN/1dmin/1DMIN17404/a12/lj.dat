@@ -1,0 +1,6 @@
+   CollisionFrequency 
+     LennardJones 
+       Epsilons[1/cm]    FAILED 
+       Sigmas[angstrom]  FAILED 
+      Masses[amu]             44.00106       28.00615
+     End      
