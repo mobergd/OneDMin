@@ -1,0 +1,3 @@
+basis: aug-cc-pvdz
+method: mp2
+orb_restricted: true

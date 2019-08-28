@@ -1,0 +1,20 @@
+# cmd conda build . -c pacchem
+package:
+    name: onedmin
+    version: "0.1.0"
+
+source:
+    path: .
+
+requirements:
+    build:
+        - cmake
+        - {{ compiler('gfortran') }}
+        - blas
+        - openblas # [linux]
+        - lapack  
+    run:
+        - cmake
+        - {{ compiler('gfortran') }}
+        - blas
+        - openblas # [linux]

@@ -65,17 +65,14 @@ c common block used to pass the interaction potential
       call prepot
 
 c READ STANDARD INPUT
-c     Standard input must contain these 3 lines
+c     Standard input must contain these 4 lines
       read(5,*)ranseed,nsamp
-      read(5,*)filex0  !                    file name of the geometry file of the well
-      read(5,*)filex1  !                    identity of the bath gas: He, Ne, Ar, Kr, H2, O2, N2
+      read(5,*)filex0  !         file name of the geometry file of the target
+      read(5,*)filex1  !         file name of the geometry file of the bath
       read(5,*)smin,smax
       zeroflag=0
 
 c hard code the rest of the input for automated kinetics
-      nsamp = 10  ! number of orientations to average over
-      smin = 3.0  ! min and max allowable center of mass distances; these might break automated scripts
-      smax = 5.d0
       rmin = smin * (2.d0**(1.d0/6.d0))
       rmax = smax * (2.d0**(1.d0/6.d0)) 
       zero = 0.d0  ! zero for the PES used here; assume the "universal" TB+exp/6 PES is being used
@@ -84,20 +81,20 @@ c hard code the rest of the input for automated kinetics
       ldebug = .false.
       ldebug = .true.
 
-c      if (ldebug) then
+c Write the input variables to the output file
       write(6,*)'RANSEED = ',ranseed
       write(6,*)'TARGET GEOMS: NUMBER = ',ntot0,', FILE = ',filex0
       write(6,*)'BATH GEOMS:   NUMBER = ',ntot1,', FILE = ',filex1
       write(6,*)'SAMPLES = ',nsamp
       write(6,*)'S range = ',smin,smax,' A'
       write(6,*)'R range = ',rmin,rmax,' A'
-c      write(6,*)'ZERO = ',zero,' Eh'
-c      endif
+      write(6,*)
+      write(6,*)
 
 ! initialize RNG
       call srand(ranseed)
 
-! read XYZ file for the well
+! read XYZ file for the target
       open(unit=93,file=filex0)
       mass0=0.d0
       j=0
@@ -115,101 +112,24 @@ c      endif
  321  close(93)
       nn0=j-1
 
-! create XYZ for the bath
-! ADD NEW BATHS HERE
-      if (filex1.eq."He".or.filex1.eq."he".or.filex1.eq."HE") then
-        nn1=1
-        symb1(1)="He"
-        xx1(1,1,1)=0.d0
-        xx1(1,2,1)=0.d0
-        xx1(1,3,1)=0.d0
-      elseif (filex1.eq."Ne".or.filex1.eq."ne".or.filex1.eq."NE") then
-        nn1=1
-        symb1(1)="Ne"
-        xx1(1,1,1)=0.d0
-        xx1(1,2,1)=0.d0
-        xx1(1,3,1)=0.d0
-      elseif (filex1.eq."Ar".or.filex1.eq."ar".or.filex1.eq."AR") then
-        nn1=1
-        symb1(1)="Ar"
-        xx1(1,1,1)=0.d0
-        xx1(1,2,1)=0.d0
-        xx1(1,3,1)=0.d0
-      elseif (filex1.eq."Aa".or.filex1.eq."aa".or.filex1.eq."AA") then
-        nn1=1
-        symb1(1)="Aa"
-        xx1(1,1,1)=0.d0
-        xx1(1,2,1)=0.d0
-        xx1(1,3,1)=0.d0
-      elseif (filex1.eq."Kr".or.filex1.eq."kr".or.filex1.eq."KR") then
-        nn1=1
-        symb1(1)="Kr"
-        xx1(1,1,1)=0.d0
-        xx1(1,2,1)=0.d0
-        xx1(1,3,1)=0.d0
-      elseif (filex1.eq."H2".or.filex1.eq."h2") then
-        nn1=2
-        do j=1,nn1
-        symb1(j)="H"
-        xx1(1,1,j)=0.d0
-        xx1(1,2,j)=0.d0
-        xx1(1,3,j)=0.d0
-        enddo
-        xx1(1,3,2)=0.7414d0
-      elseif (filex1.eq."N2".or.filex1.eq."n2") then
-        nn1=2
-        do j=1,nn1
-        symb1(j)="N"
-        xx1(1,1,j)=0.d0
-        xx1(1,2,j)=0.d0
-        xx1(1,3,j)=0.d0
-        enddo
-        xx1(1,3,2)=1.097679d0
-      elseif (filex1.eq."O2".or.filex1.eq."o2") then
-        nn1=2
-        do j=1,nn1
-        symb1(j)="O"
-        xx1(1,1,j)=0.d0
-        xx1(1,2,j)=0.d0
-        xx1(1,3,j)=0.d0
-        enddo
-        xx1(1,3,2)=1.2075d0
-      elseif (filex1.eq."NO".or.filex1.eq."no") then
-        nn1=2
-        symb1(1)="N"
-        xx1(1,1,1)=0.d0
-        xx1(1,2,1)=0.d0
-        xx1(1,3,1)=0.d0
-        symb1(2)="O"
-        xx1(1,1,2)=0.d0
-        xx1(1,2,2)=0.d0
-        xx1(1,3,2)=1.15077d0
-      elseif (filex1.eq."H2O".or.filex1.eq."h2o") then
-        nn1=3
-        symb1(1)="O"
-        xx1(1,1,1)=0.d0
-        xx1(1,2,1)=0.d0
-        xx1(1,3,1)=-0.0656863550d0
-        symb1(2)="H"
-        xx1(1,1,2)=0.d0
-        xx1(1,2,2)=0.7575086538d0    
-        xx1(1,3,2)=0.5213317598d0
-        symb1(3)="H"
-        xx1(1,1,3)=0.d0
-        xx1(1,2,3)=-0.7575086538d0    
-        xx1(1,3,3)=0.5213317598d0
-      endif
+! read XYZ file for the bath
+      open(unit=93,file=filex1)
       mass1=0.d0
-      do j=1,nn1
-        xx1(1,1,j)=xx1(1,1,j)/autoang
+      j=0
+      do
+        j=j+1
+        read(93,*,END=322)symb1(j),xx1(1,1,j),xx1(1,2,j),xx0(1,3,j)
+        xx1(1,1,j)=xx1(1,1,j)/autoang  ! A to a0
         xx1(1,2,j)=xx1(1,2,j)/autoang
         xx1(1,3,j)=xx1(1,3,j)/autoang
         call mass(symb1(j),mm1(j))
         mass1=mass1+mm1(j)
-        if (symb1(j).eq."H") symb1(j)="H2" !! required for the PES to recognize these at bath atoms
-        if (symb1(j).eq."N") symb1(j)="N2" !! ditto
-        if (symb1(j).eq."O") symb1(j)="O3" !! ditto; important to use "O3" not "O2"
+        if (symb1(j).eq."c") symb1(j)="C"
+        if (symb1(j).eq."h") symb1(j)="H"
       enddo
+ 322  close(93)
+      nn0=j-1
+
 
 ! Initialize averages
       vavg=0.d0
