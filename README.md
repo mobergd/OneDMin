@@ -1,10 +1,7 @@
-# Auto1DMin: A code for calculating Lennard-Jones parameters from detailed intermolecular potentials via one-dimensional minimizations
-
-## NOTICE 
-Currently code is cannot be compiled without Makefile. We are addressing these issues. Thank you for your patience.
+# OneDMin: A code for calculating Lennard-Jones parameters from detailed intermolecular potentials via one-dimensional minimizations
 
 ## Authors
-Ahren W. Jasper, Jim A. Miller 
+Ahren W. Jasper, Jim A. Miller, Kevin B. Moore III
 
 # Functionality 
 Lennard-Jones parameters are calculated from full-dimensional intermolecular potentials via one-dimensional minimizations averaged over the colliding partners' relative orientations. This method includes the effect of local anisotropy in the interaction potential and was shown to lead to very accurate predictions of Lennard-Jones collision rates as compared with tabulated values and with higher-level classical diffusion coefficients.
@@ -23,4 +20,4 @@ and validated for larger systems in
 
 ## Contact
 Ahren Jasper [ajasper@anl.gov]
-
+Kevin Moore [kmoore@anl.gov]
