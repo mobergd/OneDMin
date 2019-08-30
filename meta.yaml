@@ -17,3 +17,4 @@ requirements:
         - {{ compiler('fortran') }}
         - blas
         - openblas # [linux]
+        # add python dependencies when ready
