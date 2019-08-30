@@ -9,12 +9,11 @@ source:
 requirements:
     build:
         - cmake
-        - {{ compiler('gfortran') }}
+        - {{ compiler('fortran') }}
         - blas
         - openblas # [linux]
-        - lapack  
     run:
         - cmake
-        - {{ compiler('gfortran') }}
+        - {{ compiler('fortran') }}
         - blas
         - openblas # [linux]
