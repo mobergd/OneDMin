@@ -5,11 +5,11 @@ dependencies:
     - gfortran_linux-64
     - blas
     - openblas # [linux]
-    - python=3.7
-    - pybind11
-    - numpy
-    - pytest
-    - pytest-cov
-    - future
-    - flake8
-    - pylint
+#    - python=3.7
+#    - pybind11
+#    - numpy
+#    - pytest
+#    - pytest-cov
+#    - future
+#    - flake8
+#    - pylint
