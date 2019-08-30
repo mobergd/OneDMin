@@ -7,6 +7,7 @@ import subprocess
 import random
 import elstruct
 import moldr
+import autofile
 import onedmin
 
 
@@ -16,10 +17,10 @@ GEOM_DIR = os.path.join(RUN_DIR, 'geoms')
 SRC_PATH = '../../auto1dmin.x'
 
 # Set species data
-SPC_ICH = 'InChI=1S/CH4/h1H4'
-SPC_CHG = 0
-SPC_MLT = 1
-SPC_INFO = [SPC_ICH, SPC_CHG, SPC_MLT]
+TGT_ICH = 'InChI=1S/CH4/h1H4'
+TGT_CHG = 0
+TGT_MLT = 1
+TGT_INFO = [TGT_ICH, TGT_CHG, TGT_MLT]
 ROUND_GEOM = False
 
 # Set Bath data
@@ -38,8 +39,8 @@ RUN_PROG = 'molpro'
 RUN_METHOD = 'mp2'
 RUN_BASIS = 'aug-cc-pvdz'
 THRY_LVL = [RUN_PROG, RUN_METHOD, RUN_BASIS, 'RR']
-RUN_MLT = max([SPC_MLT, BATH_MLT])
-RUN_CHG = SPC_CHG + BATH_CHG
+RUN_MLT = max([TGT_MLT, BATH_MLT])
+RUN_CHG = TGT_CHG + BATH_CHG
 RND_RUN = False
 SUB_NAME = 'm.x'
 SMIN = 2
@@ -49,15 +50,19 @@ ELSTRUCT_SUB_STR = ("molpro -n 1 --nouse-logfile --no-xml-output"
                     "molprop_2015_1_linux_x86_64_i8/lib/"
                     "-d /scratch/$USER -o qc.out -s qc.in")
 
-SPC_SAVE_PREFIX = 'save'
+TGT_SAVE_PREFIX = 'save'
 BATH_SAVE_PREFIX = 'save'
 
 # Search save file system for LJ params
-# prefix is to theory fs path + bath spc fs path
-# etrans_save_fs = autofile.fs.transport(SAVE_PREFIX)
-# etrans_save_fs.leaf.create([BATH_ICH, BATH_CHG, BATH_MULT])
-# SIGMA = etrans_save_fs.leaf.file.lennard_jones_sigma.read()
-# EPSILON = etrans_save_fs.leaf.file.lennard_jones_epsilon.read()
+tgt_save_fs = autofile.fs.species(TGT_SAVE_PREFIX)
+if tgt_save_fs.leaf.exists(TGT_INFO):
+    tgt_save_path = tgt_save_fs.leaf.path(TGT_INFO)
+
+etrans_save_fs = autofile.fs.energy_transfer(tgt_save_path)
+etrans_save_path = etrans_save_fs.leaf.path(THRY_LVL)
+if etrans_save_fs.leaf.exists(THRY_LVL):
+    epsilon = etrans_save_fs.leaf.file.lennard_jones_epsilon.read(THRY_LVL)
+    sigma = etrans_save_fs.leaf.file.lennard_jones_sigma.read(THRY_LVL)
 
 SIGMA = None
 EPSILON = None
@@ -73,9 +78,9 @@ if SIGMA is None and EPSILON is None or NSAMP >= MIN_NSAMP:
 
     # Obtain the geometry for the target and bath
     TGT_GEO = onedmin.get_geometry(
-        SPC_INFO,
+        TGT_INFO,
         THRY_LVL,
-        SPC_SAVE_PREFIX,
+        TGT_SAVE_PREFIX,
         geom_dct=GEOM_DCT,
         conf='low',
         minmax=False)
@@ -87,7 +92,16 @@ if SIGMA is None and EPSILON is None or NSAMP >= MIN_NSAMP:
         conf='low',
         minmax=False)
 
-    # DO: Build the run file system
+    # Write the params to the run file system
+    # tgt_save_fs = autofile.fs.species(TGT_RUN_PREFIX)
+    # tgt_save_fs.leaf.exists(TGT_INFO)
+    # tgt_save_path = tgt_save_fs.leaf.path(TGT_INFO)
+    # etrans_run_fs = autofile.fs.energy_transfer(tgt_run_path)
+    # etrans_run_path = etrans_run_fs.leaf.path(THRY_LVL)
+    # etrans_run_fs.leaf.create(THRY_LVL)
+    # etrans_fs.leaf.file.energy.read(locs)
+    # etrans_fs.leaf.file.lennard_jones_epsilon.read(locs)
+    # etrans_fs.leaf.file.lennard_jones_sigma.read(locs)
 
     # DO: Check the number of samples already run
 
@@ -154,3 +168,12 @@ if SIGMA is None and EPSILON is None or NSAMP >= MIN_NSAMP:
     with open(SUBMIT_NAME, 'w') as submit_file:
         submit_file.write(SUBMIT_STR)
     # moldr.run_script(1dmin_scr)
+
+    # Write the params to the save file system
+    # etrans_save_fs = autofile.fs.energy_transfer(tgt_save_path)
+    # etrans_save_path = etrans_save_fs.leaf.path(THRY_LVL)
+    # etrans_save_fs.leaf.create(THRY_LVL)
+    # etrans_fs.leaf.file.energy.read(locs)
+    # etrans_fs.leaf.file.lennard_jones_epsilon.read(locs)
+    # etrans_fs.leaf.file.lennard_jones_sigma.read(locs)
+
