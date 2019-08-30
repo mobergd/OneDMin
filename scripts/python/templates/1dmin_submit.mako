@@ -23,7 +23,7 @@ export TMPDIR=${scratch}
 # Run several auto1dmin.x instances
 cd run1
 time ./auto1dmin.x < input.dat > output.dat &
-% for i in range(nprocs)-1:
+% for i in range(nprocs-1):
 cd ../run${i+2}
 ## echo "molpro.exe -c 1 -n 1 --exclusive $MOLPRO_OPTIONS molpro.exe" >> elstruct.x 
 time ./auto1dmin.x < input.dat > output.dat &

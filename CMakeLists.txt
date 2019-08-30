@@ -1,4 +1,4 @@
-project(Auto1DMin Fortran)
+project(OneDMin Fortran)
 cmake_minimum_required(VERSION 2.8)
 
 find_package(BLAS REQUIRED)
@@ -24,10 +24,10 @@ add_library(ljlibs
 message(STATUS "Found BLAS: ${BLAS_LIBRARIES}")
 message(STATUS "Found LAPACK: ${LAPACK_LIBRARIES}")
 
-add_executable(auto1dmin.x
-    ${PROJECT_SOURCE_DIR}/src/auto1dmin.f)
+add_executable(onedmin.x
+    ${PROJECT_SOURCE_DIR}/src/onedmin.f)
 
-target_link_libraries(auto1dmin.x 
+target_link_libraries(onedmin.x 
         ljlibs ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
 
-install(TARGETS auto1dmin.x DESTINATION bin)
+install(TARGETS onedmin.x DESTINATION bin)

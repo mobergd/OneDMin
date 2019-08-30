@@ -312,8 +312,8 @@ c          write(10,*)"geomtyp=xyz"
 c          write(10,*)"geometry"
 c          write(10,*)"nosym"
 c          write(10,*)"noorient"
-          write(10,*)nclu
-          write(10,*)"ANT Direct Dynamics Calculation"
+c          write(10,*)nclu
+c          write(10,*)"ANT Direct Dynamics Calculation"
           do j=1,nclu
             write(10,fmt='(a3,2x,3f20.10)')symbol(j),
      &       x(j)*autoang,y(j)*autoang,z(j)*autoang   ! default is Angstroms for geomtyp=xyz
