@@ -10,19 +10,15 @@
 
 # Set the libraries
 source ~/.bash_profile
-module load molpro/2015.1_170920
 
 # Set library path
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/ajasper/lib/
 
 # Set variables for running Molpro
 export TMPDIR=/scratch/$USER
-export MOLPRO_LIB=/soft/molpro/2015.1_170920/bebop/molprop_2015_1_linux_x86_64_i8/lib/
-export MOLPRO_OPTIONS="--nouse-logfile --no-xml-output -L $MOLPRO_LIB -d $TMPDIR -I $TMPDIR -W $TMPDIR -o qc.out -s qc.in"
 
-cd ../run0
-time ./auto1dmin.x < input.dat > output.dat &
-cd ../run1
+# Run several auto1dmin.x instances
+cd run1
 time ./auto1dmin.x < input.dat > output.dat &
 cd ../run2
 time ./auto1dmin.x < input.dat > output.dat &
@@ -39,4 +35,6 @@ time ./auto1dmin.x < input.dat > output.dat &
 cd ../run8
 time ./auto1dmin.x < input.dat > output.dat &
 cd ../run9
+time ./auto1dmin.x < input.dat > output.dat &
+cd ../run10
 time ./auto1dmin.x < input.dat > output.dat &

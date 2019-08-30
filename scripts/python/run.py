@@ -7,7 +7,6 @@ import subprocess
 import random
 import elstruct
 import moldr
-import automol
 import onedmin
 
 
@@ -57,6 +56,9 @@ BATH_SAVE_PREFIX = 'save'
 # prefix is to theory fs path + bath spc fs path
 # etrans_save_fs = autofile.fs.transport(SAVE_PREFIX)
 # etrans_save_fs.leaf.create([BATH_ICH, BATH_CHG, BATH_MULT])
+# SIGMA = etrans_save_fs.leaf.file.lennard_jones_sigma.read()
+# EPSILON = etrans_save_fs.leaf.file.lennard_jones_epsilon.read()
+
 SIGMA = None
 EPSILON = None
 
@@ -70,24 +72,24 @@ for key, val in GEOM_DCT.items():
 if SIGMA is None and EPSILON is None or NSAMP >= MIN_NSAMP:
 
     # Obtain the geometry for the target and bath
-    tgt_geo = onedmin.get_geometry(
+    TGT_GEO = onedmin.get_geometry(
         SPC_INFO,
         THRY_LVL,
         SPC_SAVE_PREFIX,
         geom_dct=GEOM_DCT,
-        confs='low',
+        conf='low',
         minmax=False)
-    bath_geo = onedmin.get_geometry(
+    BATH_GEO = onedmin.get_geometry(
         BATH_INFO,
         THRY_LVL,
         BATH_SAVE_PREFIX,
         geom_dct=GEOM_DCT,
-        confs='low',
+        conf='low',
         minmax=False)
 
-    # TODO: Build the run file system
+    # DO: Build the run file system
 
-    # TODO: Check the number of samples already run
+    # DO: Check the number of samples already run
 
     # For each processor, run an instance of 1Dmin
     for i in range(NPROCS):
@@ -99,7 +101,7 @@ if SIGMA is None and EPSILON is None or NSAMP >= MIN_NSAMP:
         # Build the 1DMin input file string with a random 9-digit integer
         ranseed = random.randrange(1E8, 1E9)
         inp_str = onedmin.write_onedmin_inp(
-            ranseed, NSAMP, bath_geo, SMIN, SMAX)
+            ranseed, NSAMP, BATH_GEO, SMIN, SMAX)
 
         # Write the 1DMin input file
         job_file_path = os.path.join(job_dir_path, 'input.dat')
@@ -145,10 +147,10 @@ if SIGMA is None and EPSILON is None or NSAMP >= MIN_NSAMP:
         subprocess.check_call(['chmod', '+x', auto1dmin_exe_name])
 
     # Write the 1DMin batch submission script and run
-    submit_str = onedmin.write_submission_script(NPROCS)
+    SUBMIT_STR = onedmin.write_submission_script(NPROCS)
 
     # Write the file
-    submit_name = os.path.join('run', 'onedmin.batch')
-    with open(submit_name, 'w') as submit_file:
-        submit_file.write(submit_str)
+    SUBMIT_NAME = os.path.join('run', 'onedmin.batch')
+    with open(SUBMIT_NAME, 'w') as submit_file:
+        submit_file.write(SUBMIT_STR)
     # moldr.run_script(1dmin_scr)

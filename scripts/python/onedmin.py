@@ -4,39 +4,51 @@ Executes the automation part of 1DMin
 
 import os
 import shutil
+import numpy as np
 from mako.template import Template
+import automol
+import moldr
 
 
 # OBTAIN THE PATH TO THE DIRECTORY CONTAINING THE TEMPLATES #
 SRC_PATH = os.path.dirname(os.path.realpath(__file__))
 TEMPLATE_PATH = os.path.join(SRC_PATH, 'templates')
 
-def get_geometry(SPC_INFO,
-                 THRY_LVL,
-                 SPC_SAVE_PREFIX,
-                 geom_dct=GEOM_DCT):
+
+def get_geometry(spc_info, thry_lvl, save_prefix,
+                 geom_dct={}, conf='low', minmax=False):
     """ get the geometry
     """
 
-    # function incorrect; wont grab all the confs different ones for that
+    assert conf in ('low', 'all')
+
 
     # Obtain the reference geometry for the species
-    spc_geo = moldr.util.reference_geometry(
-        SPC_INFO,
-        THRY_LVL,
-        SPC_SAVE_PREFIX,
-        geom_dct=GEOM_DCT)
-    print('spc geo; ref geom call')
-    print(spc_geo)
+    geo = moldr.util.reference_geometry(
+        spc_info,
+        thry_lvl,
+        save_prefix,
+        geom_dct=geom_dct)
 
+    # Obtain the desired conformer(s)
+    cnf_save_fs = autofile.fs.conformer(save_path)
+    if conf == 'low':
+        min_cnf_locs = moldr.util.min_energy_conformer_locators(save_path)
+        if min_cnf_locs:
+            geo = cnf_save_fs.leaf.file.geometry.read(min_cnf_locs)
+    elif conf == 'all'
+        # add a reader to the trajectory function
+        cnf_save_fs.trunk.file.trajectory.read()
+        
     # Obtain the most spherical geometry for species if desired
-    if RND_RUN:
-        spc_geo = onedmin.roundify_geom(spc_geo)
-    
-    # Format the geoms into xyz strings
-    spc_geo = automol.geom.string(spc_geo)
+    if minmax:
+        geo = roundify_geometry(geo)
 
-    return geom
+    # Format the geoms into xyz strings
+    geo_str = automol.geom.string(geo)
+
+    return geo_str
+
 
 def roundify_geometry(output_string):
     """ Finds the smallest geometry (by volume) from a list of
