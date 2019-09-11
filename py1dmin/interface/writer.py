@@ -36,19 +36,27 @@ def onedmin_input(ranseed, nsamp,
     return input_str
 
 
-def submission_script(nprocs):
+def submission_script(drive_path, run_path, njobs):
     """ launches the job
     """
 
+    # Write the bottom of the string
+    job_exe_lines = '# Run several onedmin.x instances'
+    job_exe_lines += 'cd {0}/run1\n'.format(run_path)
+    job_exe_lines += 'time ONEDMINEXE < input.dat > output.dat &\n'
+    for i in range(njobs-1):
+        job_exe_lines += 'cd ../run{0}\n'.format(str(i+2))
+        job_exe_lines += 'time ONEDMINEXE < input.dat > output.dat &\n'
+    job_exe_lines += 'wait\n'
+
     # Set the dictionary for the 1DMin input file
     fill_vals = {
-        "nprocs": nprocs,
-        "scratch": '/scratch/$USER'
+        "job_exe_lines": job_exe_lines,
     }
 
     # Set template name and path for the 1dmin input file
-    template_file_name = '1dmin_submit.mako'
-    template_file_path = os.path.join(TEMPLATE_PATH, template_file_name)
+    template_file_name = 'submit.mako'
+    template_file_path = os.path.join(drive_path, template_file_name)
 
     # Build the 1dmin input string
     sub_str = Template(filename=template_file_path).render(**fill_vals)
