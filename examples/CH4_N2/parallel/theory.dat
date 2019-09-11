@@ -1,0 +1,17 @@
+level 1
+prog = molpro
+method = mp2
+basis = aug-cc-pvdz
+memory = 4
+nprocs = 4
+end
+
+level 2
+prog = g09 
+method = b3lyp
+basis = aug-cc-pvdz
+memory = 4
+nprocs = 4
+end
+
+

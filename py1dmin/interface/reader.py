@@ -10,15 +10,21 @@ def lennard_jones(output_string):
     """ reads the lennard jones params from the output
     """
 
-    sigma_ptt = ('SIGMA' + app.SPACES + '=' + app.SPACES +
-                 app.capturing(app.FLOAT))
-    epsilon_ptt = ('EPSILON' + app.SPACES + '=' + app.SPACES +
+    sigma_ptt = (app.SPACES + app.INTEGER + app.SPACES +
+                 app.capturing(app.FLOAT) + app.SPACES +
+                 app.FLOAT)
+    epsilon_ptt = (app.SPACES + app.INTEGER + app.SPACES +
+                   app.FLOAT + app.SPACES +
                    app.capturing(app.FLOAT))
 
-    sigma = float(apf.last_capture(sigma_ptt, output_string))
-    epsilon = float(apf.last_capture(epsilon_ptt, output_string))
+    sigmas = apf.all_captures(sigma_ptt, output_string)
+    epsilons = apf.all_captures(epsilon_ptt, output_string)
+    if sigmas is not None:
+        sigmas = [float(val) for val in sigmas]
+    if epsilons is not None:
+        epsilons = [float(val) for val in epsilons]
 
-    return sigma, epsilon
+    return sigmas, epsilons
 
 
 def combine_params(param1, param2, rule='default'):
