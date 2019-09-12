@@ -41,12 +41,12 @@ def submission_script(drive_path, run_path, njobs):
     """
 
     # Write the bottom of the string
-    job_exe_lines = '# Run several onedmin.x instances'
+    job_exe_lines = '# Run several onedmin.x instances\n'
     job_exe_lines += 'cd {0}/run1\n'.format(run_path)
-    job_exe_lines += 'time ONEDMINEXE < input.dat > output.dat &\n'
+    job_exe_lines += 'time $ONEDMINEXE < input.dat > output.dat &\n'
     for i in range(njobs-1):
         job_exe_lines += 'cd ../run{0}\n'.format(str(i+2))
-        job_exe_lines += 'time ONEDMINEXE < input.dat > output.dat &\n'
+        job_exe_lines += 'time $ONEDMINEXE < input.dat > output.dat &\n'
     job_exe_lines += 'wait\n'
 
     # Set the dictionary for the 1DMin input file

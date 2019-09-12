@@ -1,9 +1,10 @@
 level 1
-prog = molpro
+program = molpro
 method = mp2
 basis = aug-cc-pvdz
 memory = 4
 nprocs = 4
+orb_restrict = RR
 end
 
 level 2

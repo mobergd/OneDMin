@@ -1,0 +1,71 @@
+
+
+Writing files to/lcrc/project/CMRP/pacc/OneDMin/examples/CH4_N2/parallel/run/SPC/CH4/VNWKTOKETHGBQD/0/1/UHFFFAOYSA-N/ETRANS/3vx11mR/run1
+  Writing input files...
+  Writing xyz files for target and bath....
+  Writing electronic structure submission inp template...
+  Writing electronic structure submission script...
+
+
+Writing files to/lcrc/project/CMRP/pacc/OneDMin/examples/CH4_N2/parallel/run/SPC/CH4/VNWKTOKETHGBQD/0/1/UHFFFAOYSA-N/ETRANS/3vx11mR/run2
+  Writing input files...
+  Writing xyz files for target and bath....
+  Writing electronic structure submission inp template...
+  Writing electronic structure submission script...
+
+
+Writing files to/lcrc/project/CMRP/pacc/OneDMin/examples/CH4_N2/parallel/run/SPC/CH4/VNWKTOKETHGBQD/0/1/UHFFFAOYSA-N/ETRANS/3vx11mR/run3
+  Writing input files...
+  Writing xyz files for target and bath....
+  Writing electronic structure submission inp template...
+  Writing electronic structure submission script...
+
+
+Writing files to/lcrc/project/CMRP/pacc/OneDMin/examples/CH4_N2/parallel/run/SPC/CH4/VNWKTOKETHGBQD/0/1/UHFFFAOYSA-N/ETRANS/3vx11mR/run4
+  Writing input files...
+  Writing xyz files for target and bath....
+  Writing electronic structure submission inp template...
+  Writing electronic structure submission script...
+
+
+Running each OneDMin job...
+
+real	2m43.824s
+user	5m50.089s
+sys	1m28.842s
+
+real	3m24.235s
+user	8m3.675s
+sys	1m57.141s
+rm: cannot remove '/scratch/procgrp.85596': Operation not permitted
+/soft/molpro/2015.1_170920/bebop/molprop_2015_1_linux_x86_64_i8/bin/molpro: line 549: /scratch/procgrp.85596: Permission denied
+/soft/molpro/2015.1_170920/bebop/molprop_2015_1_linux_x86_64_i8/bin/molpro: line 552: /scratch/procgrp.85596: Permission denied
+
+real	32m39.273s
+user	92m23.675s
+sys	23m36.233s
+
+real	34m21.645s
+user	96m40.456s
+sys	25m12.133s
+
+
+All OneDMin jobs finished.
+
+Reading the Lennard-Jones parameters...
+
+Sigma (Ang)  Epsilon (cm-1)  
+3.3247        276.1143        
+3.7403        255.5165        
+3.9534        213.4678        
+4.0419        260.1205        
+
+Average Sigma = 3.7650675
+Average Epsilon = 251.304795
+Number of values =  4
+Traceback (most recent call last):
+  File "../../../py1dmin/ljdriver.py", line 149, in <module>
+    TARGET_SAVE_PREFIX, target_info, THEORY_LEVEL)
+  File "/lcrc/project/CMRP/pacc/OneDMin/py1dmin/_routines.py", line 214, in write_lj_to_save
+    theory_level = [theory_level[1],
+IndexError: string index out of range
