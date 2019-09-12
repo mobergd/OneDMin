@@ -1,0 +1,64 @@
+ ---------------------------
+ OneDMin
+ Argonne National Laboratory
+ ---------------------------
+
+ Job Parameters:
+ RANSEED =    387471255
+ TARGET GEOMS: NUMBER =            1 , FILE = target.xyz      
+ BATH GEOMS:   NUMBER =            1 , FILE = bath.xyz        
+ SAMPLES =            2
+ S range =    2.0000000000000000        5.0000000000000000       A
+ R range =    2.2449240966187460        5.6123102415468651       A
+
+
+ Calculating Energy at Infinite Separation...
+ Energy (in Eh) will be written to zero.ene
+
+
+ Calculating Sigma and Epsilon for each orientation...
+
+ ORIENTATION           1
+
+ Finding distance R for bottom of well [min(V(R))]
+ Step               R            V(R)
+    1      3.63073284   -261.90791546
+    2      3.72903358   -261.15029409
+    3      3.76267624   -275.29209495
+    4      3.76267694   -276.11430178
+ Found R where V(R) is minimized!!!
+
+ Finding distance R where V(R) = 0:
+ Step               R            V(R)
+    1      3.32283022    -44.47194140
+    2      3.32465929      3.17626188
+    3      3.32466688      0.01307476
+ R where V(R)=0 found!!!
+
+Writing Epsilon =   276.11430178 to lj.out.
+Writing Sigma =       3.32466688 to lj.out.
+
+
+ ORIENTATION           2
+
+ Finding distance R for bottom of well [min(V(R))]
+ Step               R            V(R)
+    1      4.08781447   -192.26699740
+    2      4.17694117   -247.82347013
+    3      4.19092912   -255.36116479
+    4      4.19314699   -255.51392461
+    5      4.19299845   -255.51649071
+ Found R where V(R) is minimized!!!
+
+ Finding distance R where V(R) = 0:
+ Step               R            V(R)
+    1      3.74022743      7.52320143
+    2      3.74027766      0.07885482
+ R where V(R)=0 found!!!
+
+Writing Epsilon =   255.51649071 to lj.out.
+Writing Sigma =       3.74027766 to lj.out.
+
+
+ Finished sampling desired number of orientatoons
+ Exiting OneDMin...

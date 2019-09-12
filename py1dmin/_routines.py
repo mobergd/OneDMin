@@ -78,7 +78,7 @@ def write_elstruct_sub(job_dir_path, drive_path, prog):
 
     # Read the original input script as a string
     elstruct_sub_name_in = os.path.join(drive_path, 'elstruct.x')
-    with open(elstruct_sub_name_in, 'w') as elstruct_sub_file_in:
+    with open(elstruct_sub_name_in, 'r') as elstruct_sub_file_in:
         in_sub_str = elstruct_sub_file_in.read()
 
     # Write the electronic structure sumbission script
@@ -140,7 +140,7 @@ def obtain_overall_lj(run_path):
 
 
 def obtain_geometries(run_path):
-    """ get the miniumum geometries for each run
+    """ get the miniumum geometries file from each run
     """
 
     geo_str = ''
@@ -237,30 +237,31 @@ def get_geometry(spc_info, thry_lvl, save_prefix,
     """ get the geometry
     """
 
-    assert conf in ('low', 'all')
+    # assert conf in ('low', 'all')
 
-    # Obtain the reference geometry for the species
-    geo = moldr.util.reference_geometry(
-        spc_info,
-        thry_lvl,
-        save_prefix,
-        geom_dct=geom_dct)
+    # # Obtain the reference geometry for the species
+    # geo = moldr.util.reference_geometry(
+    #     spc_info,
+    #     thry_lvl,
+    #     save_prefix,
+    #     geom_dct=geom_dct)
 
-    # Obtain the desired conformer(s)
-    cnf_save_fs = autofile.fs.conformer(save_prefix)
-    if conf == 'low':
-        min_cnf_locs = moldr.util.min_energy_conformer_locators(save_prefix)
-        if min_cnf_locs:
-            geo = cnf_save_fs.leaf.file.geometry.read(min_cnf_locs)
-    elif conf == 'all':
-        # add a reader to the trajectory function
-        cnf_save_fs.trunk.file.trajectory.read()
+    # # Obtain the desired conformer(s)
+    # cnf_save_fs = autofile.fs.conformer(save_prefix)
+    # if conf == 'low':
+    #     min_cnf_locs = moldr.util.min_energy_conformer_locators(save_prefix)
+    #     if min_cnf_locs:
+    #         geo = cnf_save_fs.leaf.file.geometry.read(min_cnf_locs)
+    # elif conf == 'all':
+    #     # add a reader to the trajectory function
+    #     cnf_save_fs.trunk.file.trajectory.read()
 
-    # Obtain the most spherical geometry for species if desired
-    if minmax:
-        geo = py1dmin.interface.util.roundify_geometry(geo)
+    # # Obtain the most spherical geometry for species if desired
+    # if minmax:
+    #     geo = py1dmin.interface.util.roundify_geometry(geo)
 
     # Format the geoms into xyz strings
+    geo = automol.inchi.geometry(spc_info[0])
     geo_str = automol.geom.string(geo)
 
     return geo_str

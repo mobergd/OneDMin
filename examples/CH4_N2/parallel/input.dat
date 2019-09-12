@@ -1,4 +1,4 @@
-lennard_jones
+$lennard_jones
 theory_level = 1
 potential = lj126
 nsamps = 2
@@ -8,19 +8,19 @@ smax = 5
 run_prefix = run
 save_prefix = save
 confs = low
-end
+$end
 
-properties
+$properties
 theory_level = 2
 run_prefix = run
 save_prefix = save
 confs = low
-end
+$end
 
-baths
+$baths
 N2  InChI=1S/N2/c1-2  0 1
-end
+$end
 
-targets
+$targets
 CH4 InChI=1S/CH4/h1H4 0 1 
-end
+$end
