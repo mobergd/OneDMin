@@ -5,29 +5,29 @@ find_package(BLAS REQUIRED)
 find_package(LAPACK REQUIRED)
 
 add_library(ljlibs
-    ${PROJECT_SOURCE_DIR}/src/molpro.f
     ${PROJECT_SOURCE_DIR}/src/mass.f
-#    ${PROJECT_SOURCE_DIR}/src/paramsls.inc
     ${PROJECT_SOURCE_DIR}/src/spin.f)
 
-#add_library(tbpluslibs
-#        ${PROJECT_SOURCE_DIR}/src/tbplusexp6all.f
-#        ${PROJECT_SOURCE_DIR}/src/tbplusexp6-2.f)
+add_library(exp6libs
+    ${PROJECT_SOURCE_DIR}/src/exp6.f)
 
-#add_library(mollibs
-#        ${PROJECT_SOURCE_DIR}/src/potentials/rohM.f
-#        ${PROJECT_SOURCE_DIR}/src/potentials/rohMP.f
-#        ${PROJECT_SOURCE_DIR}/src/potentials/rohT.f
-#        ${PROJECT_SOURCE_DIR}/src/potentials/roohT.f
-#        ${PROJECT_SOURCE_DIR}/src/potentials/ch3ohM.f)
+add_library(molprolibs
+    ${PROJECT_SOURCE_DIR}/src/molpro.f)
 
 message(STATUS "Found BLAS: ${BLAS_LIBRARIES}")
 message(STATUS "Found LAPACK: ${LAPACK_LIBRARIES}")
 
-add_executable(onedmin.x
+add_executable(onedmin-exp6.x
     ${PROJECT_SOURCE_DIR}/src/onedmin.f)
 
-target_link_libraries(onedmin.x 
-        ljlibs ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
+target_link_libraries(onedmin-exp6.x 
+    ljlibs ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES} exp6libs)
 
-install(TARGETS onedmin.x DESTINATION bin)
+add_executable(onedmin-molpro.x
+    ${PROJECT_SOURCE_DIR}/src/onedmin.f)
+
+target_link_libraries(onedmin-molpro.x 
+    ljlibs ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES} molprolibs)
+
+install(TARGETS onedmin-exp6.x DESTINATION bin)
+install(TARGETS onedmin-molpro.x DESTINATION bin)

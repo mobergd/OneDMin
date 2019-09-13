@@ -24,6 +24,13 @@
 ! solutions of the low-pressure-limit master equation
 ! A. W. Jasper, J. A. Miller, and S. J. Klippenstein, J. Phys. Chem. A
 ! 117, 12243 (2013).
+! (5) Temperature- and pressure-dependent rate coefficients for the HACA
+! pathways from benzene to naphthalene
+! A. M. Mebel, Y. Georgievskii, A. W. Jasper, and S. J. Klippenstein,
+! Proc. Combust. Inst., in press (2017:w
+! (6) Kinetics of propargyl radical dissociation
+! S. J. Klippenstein, J. A. Miller, and A. W. Jasper, J. Phys. Chem. A
+! 119, 7780-7791 (2015).
 !
 ! V_M: One-dimensional potentials for the diatomic baths were obtained
 ! by fitting modified Morse curves to ab initio data.
@@ -31,10 +38,10 @@
 ! In addition to the validations given in the above references, the 
 ! present exp/6 interaction potentials have been validated for and used to 
 ! predict energy transfer in larger systems:
-! (5) A. W. Jasper, C. M. Oana, and J. A. Miller, Proc. Combust. Inst.
-! 34 (2015), online. (DOI: http://dx.doi.org/10.1016/j.proci.2014.05.105)
+! (6) A. W. Jasper, C. M. Oana, and J. A. Miller, Proc. Combust. Inst.
+! 34, 197-204 (2015).
 ! and used to predict diffusion coefficients:
-! (6) A. W. Jasper and J. M. Miller, Combust. Flame, 161, 101-110 (2014).
+! (7) A. W. Jasper and J. M. Miller, Combust. Flame, 161, 101-110 (2014).
 
       subroutine pot(symb,x,y,z,v,dvdx,dvdy,dvdz,natom,maxatom)
 
@@ -55,13 +62,14 @@
 ! DVDZ(1,NATOM): Array of z components of the gradient for each atom in hartree/bohr
 
 ! ATOM LABEL CONVENTIONS:
-! Atom labels are used to distinguich "bath" atoms from "target" atoms.
+! Atom labels are used to distinguish "bath" atoms from "target" atoms.
 ! The CxHy TB PES is evaluated for "target" atoms only. The interaction 
 ! PES is evaluated for every intermolecular pair of atoms. The diatomic
 ! bath gas PES is evaluated for the two atoms in the diatomic bath.
 !     "Target" atoms should be labeled
 !        C or c for Carbon
 !        H or h for Hydrogen
+!        Ca or ca for the radical carbon in naphthyl when used with the Ha bath
 !     "Bath" atoms should be labeled
 !        He, HE, or he for Helium
 !        Ne, NE, or ne for Neon
@@ -74,6 +82,14 @@
 !        O3 or o3 for each O atom in the O2 bath
 !        Note: By default the RADIAL fits from Ref 3 are returned for
 !        the diatomic baths.
+!      Special cases
+!        PAH + He and Ar:
+!        Label the bath Ha or ha for naphthyl radical and similar systems + He
+!          ** The radical C in naphthyl should be labeled Ca **
+!        Label the bath Aa or aa for naphthyl radical and similar systems + Ar
+!        C3H3 + He and Ar:
+!        Label the bath Hp or hp for propargyl radical + He
+!        Label the bath Ap or ap for propargyl radical + Ar
 
       implicit real*8(a-h,o-z)
       dimension x(maxatom),y(maxatom),z(maxatom)
@@ -151,9 +167,7 @@
 !       C2H4 + Ar
       if ((symb(i).eq."Ae").or.
      &    (symb(i).eq."ae")) at(i)=37
-!       A3 + N2
-      if ((symb(i).eq."Na").or.
-     &    (symb(i).eq."na")) at(i)=34
+
 !       A3 + Ar
       if ((symb(i).eq."Aa").or.
      &    (symb(i).eq."aa")) at(i)=35
@@ -162,17 +176,17 @@
      &    (symb(i).eq."ca"))  at(i)=5
       if ((symb(i).eq."Ha").or.
      &    (symb(i).eq."ha"))  at(i)=36
+
 !       propargyl + He
       if ((symb(i).eq."Hp").or.
      &    (symb(i).eq."hp")) at(i)=32
 !       propargyl + Ar
       if ((symb(i).eq."Ap").or.
      &    (symb(i).eq."ap")) at(i)=33
-!       vinyl + He
+
       if ((symb(i).eq."Hx").or.
      &    (symb(i).eq."hx").or.
-     &    (symb(i).eq."HX")) at(i)=31
-
+     &    (symb(i).eq."HX")) at(i)=31      ! helium for C2H3
       if (at(i).eq.0) then ! atom not found
            write(6,*)"Atom # ",i," (",symb(i),") not found"
            stop
@@ -310,8 +324,7 @@ c        print *,rr,yy,beta,v
 
 c        print *,dvdr
 
-        elseif ((at(1).eq.26.and.at(2).eq.26).or.
-     &          (at(1).eq.34.and.at(2).eq.34)) then
+        elseif (at(1).eq.26.and.at(2).eq.26) then
 ! N2 bath
 !       fit to MRCI+Q/CBS(AQZ,A5Z) full valence
 !       agrees reasonably well with more complicated form of LeRoy (JCP 125, 164310 (2006))
@@ -477,12 +490,12 @@ c       Troya's fit to CH4+Kr  (J. Phys. Chem. 110, 10834 (2006))
           bb=3.238d0
           cc=-621.784d0
           troya=.true.
-c         reoptimized for i-propane + KR, QCISD(T)/CBS CC
+c         reoptimized for i-propyl + KR, QCISD(T)/CBS CC
 c          aa=10.**4.19044465
 c          bb=3.41540574
 c          cc=-350.001526
 c          troya=.true.
-c         reoptimized for n-propane + KR, QCISD(T)/CBS CC
+c         reoptimized for n-propyl + KR, QCISD(T)/CBS CC
 c          aa=10.**4.27774285
 c          bb=3.47558214
 c          cc=-457.029939
@@ -493,12 +506,12 @@ c       Troya's fit to CH4+Kr  (J. Phys. Chem. 110, 10834 (2006))
           bb=3.520d0
           cc=-268.460d0
           troya=.true.
-c         reoptimized for i-propane + KR, QCISD(T)/CBS CC
+c         reoptimized for i-proply + KR, QCISD(T)/CBS CC
 c           aa=10.**5.6093936
 c           bb=3.91874142
 c           cc=-1102.49641
 c          troya=.true.
-c         reoptimized for n-propane + KR, QCISD(T)/CBS CC
+c         reoptimized for n-propyl + KR, QCISD(T)/CBS CC
 c          aa=10.**5.10611591
 c          bb=3.51407819
 c          cc=-683.828242
