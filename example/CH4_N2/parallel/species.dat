@@ -1,0 +1,10 @@
+species CH4 
+charge = 0
+mult = 1
+end
+
+species N2
+charge = 0
+mult = 1
+
+end

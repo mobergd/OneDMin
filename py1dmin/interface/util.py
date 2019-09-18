@@ -2,8 +2,11 @@
 reads info
 """
 
+import numpy as np
+import automol
 
-def roundify_geometry(output_string):
+
+def roundify_geometry(geoms):
     """ Finds the smallest geometry (by volume) from a list of
         conformer geometries
         :param str output_string: string for a conformer
@@ -12,7 +15,9 @@ def roundify_geometry(output_string):
     """
 
     # Get lines for the output string
-    lines = output_string.splitlines()
+    geoms_string = '\n'.join([automol.geom.xyz_string(geom)
+                              for geom in geoms])
+    lines = geoms_string.splitlines()
 
     # Get the number of atoms
     natom = int(lines[0])
@@ -45,11 +50,12 @@ def roundify_geometry(output_string):
         ngeom += 1
 
     # Set the output geometry
-    geom_str = '{}\n'.format(natom)
+    geom_str = ''
     for i in range(natom):
         geom_str += lines[i+small_geo_idx*(natom+2)+2] + '\n'
+    round_geom = automol.geom.from_string(geom_str)
 
-    return geom_str
+    return round_geom
 
 
 def combine_params(param1, param2, rule='default'):
