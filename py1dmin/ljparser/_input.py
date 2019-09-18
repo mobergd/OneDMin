@@ -17,19 +17,19 @@ from autoparse.pattern import NONNEWLINE
 from autoparse.pattern import NEWLINE
 
 
-ODM_SUPPORTED_SECTIONS = [
+INPUT_SUPPORTED_SECTIONS = [
     'lennard_jones',
     'properties',
     'baths',
     'targets'
 ]
-ODM_REQUIRED_SECTIONS = [
+INPUT_REQUIRED_SECTIONS = [
     'lennard_jones',
     'baths',
     'targets'
 ]
 
-ODM_SUPPORTED_KEYWORDS = [
+LJ_SUPPORTED_KEYWORDS = [
     'theory_level',
     'potential',
     'nsamps',
@@ -38,39 +38,19 @@ ODM_SUPPORTED_KEYWORDS = [
     'smax',
     'run_prefix',
     'save_prefix',
-    'confs'
+    'conf'
 ]
-ODM_REQUIRED_KEYWORDS = [
+LJ_REQUIRED_KEYWORDS = [
     'theory_level',
     'potential',
     'nsamps',
     'njobs',
     'run_prefix',
     'save_prefix',
-    'confs'
-]
-
-ELSTRUCT_REQUIRED_KEYWORDS = [
-    'program',
-    'method',
-    'basis',
-    'orb_restrict'
-]
-ELSTRUCT_SUPPORTED_KEYWORDS = [
-    'program',
-    'method',
-    'basis',
-    'orb_restrict',
-    'memory',
-    'nprocs',
-    'econv',
-    'gconv'
 ]
 
 
-# Parser functions for the OneDMin Input files
-
-# Read the targets and baths
+# Read the targets and baths sections and species
 
 def read_targets(input_string):
     """ builds a dictionary containing all needed info for the targets
@@ -222,11 +202,11 @@ def read_smax(input_string):
     return keyword
 
 
-def read_confs(input_string):
+def read_conf(input_string):
     """ obtain the confs to be used
     """
 
-    pattern = ('confs' +
+    pattern = ('conf' +
                zero_or_more(SPACE) + '=' + zero_or_more(SPACE) +
                capturing(one_or_more(NONSPACE)))
     block = _get_lennard_jones_options_section(input_string)
@@ -299,117 +279,6 @@ def _get_lennard_jones_options_section(input_string):
     return section
 
 
-# Parser functions for the theory.dat file
-
-def read_program(input_string, level):
-    """ obtain the theory level
-    """
-    pattern = ('program' +
-               zero_or_more(SPACE) + '=' + zero_or_more(SPACE) +
-               capturing(one_or_more(NONSPACE)))
-    block = _get_level_section(input_string, level)
-
-    keyword = first_capture(pattern, block)
-
-    assert keyword is not None
-
-    return keyword
-
-
-def read_method(input_string, level):
-    """ obtain the method level
-    """
-    pattern = ('method' +
-               zero_or_more(SPACE) + '=' + zero_or_more(SPACE) +
-               capturing(one_or_more(NONSPACE)))
-    block = _get_level_section(input_string, level)
-
-    keyword = first_capture(pattern, block)
-
-    assert keyword is not None
-
-    return keyword
-
-
-def read_basis(input_string, level):
-    """ obtain the basis level
-    """
-    pattern = ('basis' +
-               zero_or_more(SPACE) + '=' + zero_or_more(SPACE) +
-               capturing(one_or_more(NONSPACE)))
-    block = _get_level_section(input_string, level)
-
-    keyword = first_capture(pattern, block)
-
-    assert keyword is not None
-
-    return keyword
-
-
-def read_orb_restrict(input_string, level):
-    """ obtain the orb_restricted level
-    """
-    pattern = ('orb_restrict' +
-               zero_or_more(SPACE) + '=' + zero_or_more(SPACE) +
-               capturing(one_or_more(NONSPACE)))
-    block = _get_level_section(input_string, level)
-
-    keyword = first_capture(pattern, block)
-
-    assert keyword is not None
-
-    return keyword
-
-
-def read_memory(input_string, level):
-    """ obtain the memory level
-    """
-    pattern = ('memory' +
-               zero_or_more(SPACE) + '=' + zero_or_more(SPACE) +
-               capturing(one_or_more(NONSPACE)))
-    block = _get_level_section(input_string, level)
-
-    keyword = first_capture(pattern, block)
-
-    if keyword is None:
-        keyword = 0.5
-    else:
-        keyword = float(keyword)
-
-    return keyword
-
-
-def read_nprocs(input_string, level):
-    """ obtain the memory level
-    """
-    pattern = ('memory' +
-               zero_or_more(SPACE) + '=' + zero_or_more(SPACE) +
-               capturing(one_or_more(NONSPACE)))
-    block = _get_level_section(input_string, level)
-
-    keyword = first_capture(pattern, block)
-
-    if keyword is None:
-        keyword = 1
-    else:
-        keyword = int(keyword)
-
-    assert keyword is not None
-
-    return keyword
-
-
-def _get_level_section(input_string, level):
-    """ species input
-    """
-    pattern = ('level' + one_or_more(SPACE) + level +
-               capturing(one_or_more(WILDCARD, greedy=False)) +
-               'end')
-    section = first_capture(pattern, input_string)
-
-    return section
-
-
 # Functions to check for errors in the input file
 
 def check_defined_sections(input_string):
@@ -429,13 +298,13 @@ def check_defined_sections(input_string):
             defined_sections.append(match)
 
     # Check if sections are supported
-    if not all(section in ODM_SUPPORTED_SECTIONS
+    if not all(section in INPUT_SUPPORTED_SECTIONS
                for section in defined_sections):
         raise NotImplementedError
 
     # Check if elements of keywords
     if not all(section in defined_sections
-               for section in ODM_REQUIRED_SECTIONS):
+               for section in INPUT_REQUIRED_SECTIONS):
         raise NotImplementedError
 
 
@@ -446,30 +315,13 @@ def check_defined_lennard_jones_keywords(input_string):
     defined_keywords = _get_defined_keywords(section_string)
 
     # Check if keywords are supported
-    if not all(keyword in ODM_SUPPORTED_KEYWORDS
+    if not all(keyword in LJ_SUPPORTED_KEYWORDS
                for keyword in defined_keywords):
         raise NotImplementedError
 
     # Check if elements of keywords
     if not all(keyword in defined_keywords
-               for keyword in ODM_REQUIRED_KEYWORDS):
-        raise NotImplementedError
-
-
-def check_defined_theory_level_keywords(input_string, level):
-    """ obtains the keywords defined in the input by the user
-    """
-    section_string = _get_level_section(input_string, level)
-    defined_keywords = _get_defined_keywords(section_string)
-
-    # Check if keywords are supported
-    if not all(keyword in ELSTRUCT_SUPPORTED_KEYWORDS
-               for keyword in defined_keywords):
-        raise NotImplementedError
-
-    # Check if elements of keywords
-    if not all(keyword in defined_keywords
-               for keyword in ELSTRUCT_REQUIRED_KEYWORDS):
+               for keyword in LJ_REQUIRED_KEYWORDS):
         raise NotImplementedError
 
 

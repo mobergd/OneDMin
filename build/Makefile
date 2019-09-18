@@ -80,28 +80,6 @@ install/local/fast: preinstall/fast
 	/blues/gpfs/home/kmoore/miniconda/envs/pacc-env-mini/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/blues/gpfs/home/kmoore/miniconda/envs/pacc-env-mini/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/blues/gpfs/home/kmoore/miniconda/envs/pacc-env-mini/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
@@ -123,6 +101,28 @@ list_install_components:
 list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/blues/gpfs/home/kmoore/miniconda/envs/pacc-env-mini/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/blues/gpfs/home/kmoore/miniconda/envs/pacc-env-mini/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -157,17 +157,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named onedmin.x
+# Target rules for targets named exp6libs
 
 # Build rule for target.
-onedmin.x: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 onedmin.x
-.PHONY : onedmin.x
+exp6libs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 exp6libs
+.PHONY : exp6libs
 
 # fast build rule for target.
-onedmin.x/fast:
-	$(MAKE) -f CMakeFiles/onedmin.x.dir/build.make CMakeFiles/onedmin.x.dir/build
-.PHONY : onedmin.x/fast
+exp6libs/fast:
+	$(MAKE) -f CMakeFiles/exp6libs.dir/build.make CMakeFiles/exp6libs.dir/build
+.PHONY : exp6libs/fast
 
 #=============================================================================
 # Target rules for targets named ljlibs
@@ -181,6 +181,99 @@ ljlibs: cmake_check_build_system
 ljlibs/fast:
 	$(MAKE) -f CMakeFiles/ljlibs.dir/build.make CMakeFiles/ljlibs.dir/build
 .PHONY : ljlibs/fast
+
+#=============================================================================
+# Target rules for targets named onedmin-dd.x
+
+# Build rule for target.
+onedmin-dd.x: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 onedmin-dd.x
+.PHONY : onedmin-dd.x
+
+# fast build rule for target.
+onedmin-dd.x/fast:
+	$(MAKE) -f CMakeFiles/onedmin-dd.x.dir/build.make CMakeFiles/onedmin-dd.x.dir/build
+.PHONY : onedmin-dd.x/fast
+
+#=============================================================================
+# Target rules for targets named ddlibs
+
+# Build rule for target.
+ddlibs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ddlibs
+.PHONY : ddlibs
+
+# fast build rule for target.
+ddlibs/fast:
+	$(MAKE) -f CMakeFiles/ddlibs.dir/build.make CMakeFiles/ddlibs.dir/build
+.PHONY : ddlibs/fast
+
+#=============================================================================
+# Target rules for targets named onedmin-exp6.x
+
+# Build rule for target.
+onedmin-exp6.x: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 onedmin-exp6.x
+.PHONY : onedmin-exp6.x
+
+# fast build rule for target.
+onedmin-exp6.x/fast:
+	$(MAKE) -f CMakeFiles/onedmin-exp6.x.dir/build.make CMakeFiles/onedmin-exp6.x.dir/build
+.PHONY : onedmin-exp6.x/fast
+
+src/dd.o: src/dd.f.o
+
+.PHONY : src/dd.o
+
+# target to build an object file
+src/dd.f.o:
+	$(MAKE) -f CMakeFiles/ddlibs.dir/build.make CMakeFiles/ddlibs.dir/src/dd.f.o
+.PHONY : src/dd.f.o
+
+src/dd.i: src/dd.f.i
+
+.PHONY : src/dd.i
+
+# target to preprocess a source file
+src/dd.f.i:
+	$(MAKE) -f CMakeFiles/ddlibs.dir/build.make CMakeFiles/ddlibs.dir/src/dd.f.i
+.PHONY : src/dd.f.i
+
+src/dd.s: src/dd.f.s
+
+.PHONY : src/dd.s
+
+# target to generate assembly for a file
+src/dd.f.s:
+	$(MAKE) -f CMakeFiles/ddlibs.dir/build.make CMakeFiles/ddlibs.dir/src/dd.f.s
+.PHONY : src/dd.f.s
+
+src/exp6.o: src/exp6.f.o
+
+.PHONY : src/exp6.o
+
+# target to build an object file
+src/exp6.f.o:
+	$(MAKE) -f CMakeFiles/exp6libs.dir/build.make CMakeFiles/exp6libs.dir/src/exp6.f.o
+.PHONY : src/exp6.f.o
+
+src/exp6.i: src/exp6.f.i
+
+.PHONY : src/exp6.i
+
+# target to preprocess a source file
+src/exp6.f.i:
+	$(MAKE) -f CMakeFiles/exp6libs.dir/build.make CMakeFiles/exp6libs.dir/src/exp6.f.i
+.PHONY : src/exp6.f.i
+
+src/exp6.s: src/exp6.f.s
+
+.PHONY : src/exp6.s
+
+# target to generate assembly for a file
+src/exp6.f.s:
+	$(MAKE) -f CMakeFiles/exp6libs.dir/build.make CMakeFiles/exp6libs.dir/src/exp6.f.s
+.PHONY : src/exp6.f.s
 
 src/mass.o: src/mass.f.o
 
@@ -209,40 +302,14 @@ src/mass.f.s:
 	$(MAKE) -f CMakeFiles/ljlibs.dir/build.make CMakeFiles/ljlibs.dir/src/mass.f.s
 .PHONY : src/mass.f.s
 
-src/molpro.o: src/molpro.f.o
-
-.PHONY : src/molpro.o
-
-# target to build an object file
-src/molpro.f.o:
-	$(MAKE) -f CMakeFiles/ljlibs.dir/build.make CMakeFiles/ljlibs.dir/src/molpro.f.o
-.PHONY : src/molpro.f.o
-
-src/molpro.i: src/molpro.f.i
-
-.PHONY : src/molpro.i
-
-# target to preprocess a source file
-src/molpro.f.i:
-	$(MAKE) -f CMakeFiles/ljlibs.dir/build.make CMakeFiles/ljlibs.dir/src/molpro.f.i
-.PHONY : src/molpro.f.i
-
-src/molpro.s: src/molpro.f.s
-
-.PHONY : src/molpro.s
-
-# target to generate assembly for a file
-src/molpro.f.s:
-	$(MAKE) -f CMakeFiles/ljlibs.dir/build.make CMakeFiles/ljlibs.dir/src/molpro.f.s
-.PHONY : src/molpro.f.s
-
 src/onedmin.o: src/onedmin.f.o
 
 .PHONY : src/onedmin.o
 
 # target to build an object file
 src/onedmin.f.o:
-	$(MAKE) -f CMakeFiles/onedmin.x.dir/build.make CMakeFiles/onedmin.x.dir/src/onedmin.f.o
+	$(MAKE) -f CMakeFiles/onedmin-dd.x.dir/build.make CMakeFiles/onedmin-dd.x.dir/src/onedmin.f.o
+	$(MAKE) -f CMakeFiles/onedmin-exp6.x.dir/build.make CMakeFiles/onedmin-exp6.x.dir/src/onedmin.f.o
 .PHONY : src/onedmin.f.o
 
 src/onedmin.i: src/onedmin.f.i
@@ -251,7 +318,8 @@ src/onedmin.i: src/onedmin.f.i
 
 # target to preprocess a source file
 src/onedmin.f.i:
-	$(MAKE) -f CMakeFiles/onedmin.x.dir/build.make CMakeFiles/onedmin.x.dir/src/onedmin.f.i
+	$(MAKE) -f CMakeFiles/onedmin-dd.x.dir/build.make CMakeFiles/onedmin-dd.x.dir/src/onedmin.f.i
+	$(MAKE) -f CMakeFiles/onedmin-exp6.x.dir/build.make CMakeFiles/onedmin-exp6.x.dir/src/onedmin.f.i
 .PHONY : src/onedmin.f.i
 
 src/onedmin.s: src/onedmin.f.s
@@ -260,7 +328,8 @@ src/onedmin.s: src/onedmin.f.s
 
 # target to generate assembly for a file
 src/onedmin.f.s:
-	$(MAKE) -f CMakeFiles/onedmin.x.dir/build.make CMakeFiles/onedmin.x.dir/src/onedmin.f.s
+	$(MAKE) -f CMakeFiles/onedmin-dd.x.dir/build.make CMakeFiles/onedmin-dd.x.dir/src/onedmin.f.s
+	$(MAKE) -f CMakeFiles/onedmin-exp6.x.dir/build.make CMakeFiles/onedmin-exp6.x.dir/src/onedmin.f.s
 .PHONY : src/onedmin.f.s
 
 src/spin.o: src/spin.f.o
@@ -298,18 +367,24 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install/local"
-	@echo "... onedmin.x"
-	@echo "... edit_cache"
-	@echo "... ljlibs"
-	@echo "... rebuild_cache"
 	@echo "... install"
 	@echo "... list_install_components"
+	@echo "... exp6libs"
+	@echo "... rebuild_cache"
+	@echo "... ljlibs"
+	@echo "... onedmin-dd.x"
+	@echo "... edit_cache"
+	@echo "... ddlibs"
+	@echo "... onedmin-exp6.x"
+	@echo "... src/dd.o"
+	@echo "... src/dd.i"
+	@echo "... src/dd.s"
+	@echo "... src/exp6.o"
+	@echo "... src/exp6.i"
+	@echo "... src/exp6.s"
 	@echo "... src/mass.o"
 	@echo "... src/mass.i"
 	@echo "... src/mass.s"
-	@echo "... src/molpro.o"
-	@echo "... src/molpro.i"
-	@echo "... src/molpro.s"
 	@echo "... src/onedmin.o"
 	@echo "... src/onedmin.i"
 	@echo "... src/onedmin.s"

@@ -57,22 +57,9 @@ include CMakeFiles/ljlibs.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/ljlibs.dir/flags.make
 
-CMakeFiles/ljlibs.dir/src/molpro.f.o: CMakeFiles/ljlibs.dir/flags.make
-CMakeFiles/ljlibs.dir/src/molpro.f.o: ../src/molpro.f
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/lcrc/project/CMRP/pacc/OneDMin/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building Fortran object CMakeFiles/ljlibs.dir/src/molpro.f.o"
-	/home/kmoore/miniconda/envs/pacc-env-mini/bin/x86_64-conda_cos6-linux-gnu-gfortran $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /lcrc/project/CMRP/pacc/OneDMin/src/molpro.f -o CMakeFiles/ljlibs.dir/src/molpro.f.o
-
-CMakeFiles/ljlibs.dir/src/molpro.f.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/ljlibs.dir/src/molpro.f.i"
-	/home/kmoore/miniconda/envs/pacc-env-mini/bin/x86_64-conda_cos6-linux-gnu-gfortran $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /lcrc/project/CMRP/pacc/OneDMin/src/molpro.f > CMakeFiles/ljlibs.dir/src/molpro.f.i
-
-CMakeFiles/ljlibs.dir/src/molpro.f.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/ljlibs.dir/src/molpro.f.s"
-	/home/kmoore/miniconda/envs/pacc-env-mini/bin/x86_64-conda_cos6-linux-gnu-gfortran $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /lcrc/project/CMRP/pacc/OneDMin/src/molpro.f -o CMakeFiles/ljlibs.dir/src/molpro.f.s
-
 CMakeFiles/ljlibs.dir/src/mass.f.o: CMakeFiles/ljlibs.dir/flags.make
 CMakeFiles/ljlibs.dir/src/mass.f.o: ../src/mass.f
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/lcrc/project/CMRP/pacc/OneDMin/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building Fortran object CMakeFiles/ljlibs.dir/src/mass.f.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/lcrc/project/CMRP/pacc/OneDMin/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building Fortran object CMakeFiles/ljlibs.dir/src/mass.f.o"
 	/home/kmoore/miniconda/envs/pacc-env-mini/bin/x86_64-conda_cos6-linux-gnu-gfortran $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /lcrc/project/CMRP/pacc/OneDMin/src/mass.f -o CMakeFiles/ljlibs.dir/src/mass.f.o
 
 CMakeFiles/ljlibs.dir/src/mass.f.i: cmake_force
@@ -85,7 +72,7 @@ CMakeFiles/ljlibs.dir/src/mass.f.s: cmake_force
 
 CMakeFiles/ljlibs.dir/src/spin.f.o: CMakeFiles/ljlibs.dir/flags.make
 CMakeFiles/ljlibs.dir/src/spin.f.o: ../src/spin.f
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/lcrc/project/CMRP/pacc/OneDMin/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building Fortran object CMakeFiles/ljlibs.dir/src/spin.f.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/lcrc/project/CMRP/pacc/OneDMin/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building Fortran object CMakeFiles/ljlibs.dir/src/spin.f.o"
 	/home/kmoore/miniconda/envs/pacc-env-mini/bin/x86_64-conda_cos6-linux-gnu-gfortran $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /lcrc/project/CMRP/pacc/OneDMin/src/spin.f -o CMakeFiles/ljlibs.dir/src/spin.f.o
 
 CMakeFiles/ljlibs.dir/src/spin.f.i: cmake_force
@@ -98,19 +85,17 @@ CMakeFiles/ljlibs.dir/src/spin.f.s: cmake_force
 
 # Object files for target ljlibs
 ljlibs_OBJECTS = \
-"CMakeFiles/ljlibs.dir/src/molpro.f.o" \
 "CMakeFiles/ljlibs.dir/src/mass.f.o" \
 "CMakeFiles/ljlibs.dir/src/spin.f.o"
 
 # External object files for target ljlibs
 ljlibs_EXTERNAL_OBJECTS =
 
-libljlibs.a: CMakeFiles/ljlibs.dir/src/molpro.f.o
 libljlibs.a: CMakeFiles/ljlibs.dir/src/mass.f.o
 libljlibs.a: CMakeFiles/ljlibs.dir/src/spin.f.o
 libljlibs.a: CMakeFiles/ljlibs.dir/build.make
 libljlibs.a: CMakeFiles/ljlibs.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/lcrc/project/CMRP/pacc/OneDMin/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking Fortran static library libljlibs.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/lcrc/project/CMRP/pacc/OneDMin/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking Fortran static library libljlibs.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/ljlibs.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ljlibs.dir/link.txt --verbose=$(VERBOSE)
 

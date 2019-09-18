@@ -1,5 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/ljlibs.dir/src/molpro.f.o"
   "CMakeFiles/ljlibs.dir/src/mass.f.o"
   "CMakeFiles/ljlibs.dir/src/spin.f.o"
   "libljlibs.pdb"
